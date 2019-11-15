@@ -2,9 +2,10 @@ import React from 'react';
 import Timeline from './Timeline'
 import SceneControls from './SceneControls'
 import DayLabel from './DayLabel'
+import UserQueue from './UserQueue'
 
 import { connect } from 'react-redux';
-import { updateCurrentTime } from './redux';
+import { updateCurrentTime } from '../redux';
 
 class Scene extends React.Component {
   state = {
@@ -12,7 +13,7 @@ class Scene extends React.Component {
     speed: 2000
   }
   handlePlay = () => {
-    this.setState({ play: true })
+    this.setState({ play: true, speed: 2000 })
   }
   handlePause = () => {
     this.setState({ play: false })
@@ -25,14 +26,15 @@ class Scene extends React.Component {
     this.setState({ play: true, speed: 1000 })
   }
   handleFastForward = () => {
-    this.setState({ play: true, speed: 400 })
+    this.setState({ play: true, speed: 600 })
   }
   handleStepForward = () => {
     this.setState({ play: false })
     const { current } = this.props
     this.props.updateCurrentTime(current + 1)
   }
-   render() {
+
+  render() {
     const { play, speed } = this.state
     return (
       <div>
@@ -46,6 +48,24 @@ class Scene extends React.Component {
           onFastForward={this.handleFastForward}
           onStepForward={this.handleStepForward}
         />
+        <UserQueue />
+        <br/>
+        test
+        <br/>
+        test
+        <br/>
+        test
+        <br/>
+        test
+        <br/>
+        test
+        <br/>
+        test
+        <br/>
+        test
+        <br/>
+        test
+        
       </div>
     )
   }

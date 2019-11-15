@@ -1,8 +1,8 @@
 import React from 'react';
-import logo from './gym.png';
-import './App.css';
+import logo from './assets/gym.png';
+import './styles/App.css';
 import { Row, Col } from 'antd';
-import Scene from './Scene'
+import Scene from './components/Scene'
 
 
 function App() {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Slider } from 'antd';
 
 import { connect } from 'react-redux';
-import { updateCurrentTime } from './redux';
+import { updateCurrentTime } from '../redux';
 
 const marks = {
   0: '6:00 AM',

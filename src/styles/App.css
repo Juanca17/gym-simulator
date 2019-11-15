@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #eae9e9;
+  background-color: #d2d1d1;
   min-height: 100vh;
   display: flex;
   font-size: calc(10px + 2vmin);
@@ -40,4 +40,29 @@
 
 .hour {
   font-size: calc(8px + 2vmin);
+}
+
+.user-queue {
+  background-color: #ecebeb;
+  margin-top: 30px;
+  border-radius: 15px;
+  min-height: 5.5em;
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 3px;
+}
+
+.user-icon {
+  margin-left: 5px;
+  margin-top: 5px;
+  height: 1.5em;
+  z-index: 3;
+}
+.user-icon:hover {
+  cursor: pointer;
+  height: 1.8em;
+}
+
+.user-queue-pagination {
+  margin-top: 10px !important;
 }
