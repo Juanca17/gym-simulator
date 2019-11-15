@@ -1,9 +1,22 @@
 .App {
   text-align: center;
+  background-color: #eae9e9;
+  min-height: 100vh;
+  display: flex;
+  font-size: calc(10px + 2vmin);
+}
+
+.App-side {
+  background-color: #282c34;
+  min-height: 100vh;
+}
+
+.App-main {
+  background-color: #282c34;
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 15vmin;
 }
 
 .App-header {
