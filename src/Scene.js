@@ -1,6 +1,7 @@
 import React from 'react';
 import Timeline from './Timeline'
 import SceneControls from './SceneControls'
+import DayLabel from './DayLabel'
 
 class Scene extends React.Component {
   state = {
@@ -21,7 +22,7 @@ class Scene extends React.Component {
     this.setState({ play: true, speed: 1000 })
   }
   handleFastForward = () => {
-    this.setState({ play: true, speed: 100 })
+    this.setState({ play: true, speed: 400 })
   }
   handleStepForward = () => {
     this.setState({ play: false })
@@ -32,6 +33,7 @@ class Scene extends React.Component {
     const { play, speed } = this.state
     return (
       <div>
+        <DayLabel day={1} timline={this.timeline}/>
         <Timeline ref={ref => this.timeline = ref} play={play} speed={speed} />
         <SceneControls
           onPlay={this.handlePlay}

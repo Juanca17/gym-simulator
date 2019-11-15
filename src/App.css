@@ -30,6 +30,14 @@
   color: white;
 }
 
-.App-link {
-  color: #09d3ac;
+.day-label {
+  text-align: left;
+}
+
+.day {
+  font-size: calc(20px + 2vmin);
+}
+
+.hour {
+  font-size: calc(8px + 2vmin);
 }

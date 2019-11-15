@@ -1,6 +1,9 @@
 import React from 'react';
 import { Slider } from 'antd';
 
+import { connect } from 'react-redux';
+import { updateCurrentTime } from './redux';
+
 const marks = {
   0: '6:00',
   360: '12:00',
@@ -9,26 +12,25 @@ const marks = {
 };
 
 class Timeline extends React.Component {
-  state = {
-    current: 0
-  }
-
   componentDidUpdate() {
-    const { play, speed } = this.props
-    const { current } = this.state
-    console.log(current);
+    const { play, speed, current } = this.props
     if (play && current < 1080) {
-      setTimeout(() => this.setState({ current: current + 1 }), speed);
+      setTimeout(() => {
+        this.props.updateCurrentTime(current + 1)
+      }, speed);
     }
   }
 
 
   render() {
-    const { current } = this.state
+    const { current } = this.props
     return (
       <Slider marks={marks} value={current} max={1080} tooltipVisible={false} />
     )
   }
 }
 
-export default Timeline;
+const mapStateToProps = state => ({ current: state.scene.current });
+const mapDispatchToProps = { updateCurrentTime };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timeline);
