@@ -3,6 +3,9 @@ import Timeline from './Timeline'
 import SceneControls from './SceneControls'
 import DayLabel from './DayLabel'
 
+import { connect } from 'react-redux';
+import { updateCurrentTime } from './redux';
+
 class Scene extends React.Component {
   state = {
     play: false,
@@ -16,7 +19,7 @@ class Scene extends React.Component {
   }
   handleStop = () => {
     this.setState({ play: false, speed: 2000 })
-    this.timeline.setState({ current: 0 })
+    this.props.updateCurrentTime(0)
   }
   handleForward = () => {
     this.setState({ play: true, speed: 1000 })
@@ -26,14 +29,14 @@ class Scene extends React.Component {
   }
   handleStepForward = () => {
     this.setState({ play: false })
-    const { current } = this.timeline.state
-    this.timeline.setState({ current: current + 1 })
+    const { current } = this.props
+    this.props.updateCurrentTime(current + 1)
   }
    render() {
     const { play, speed } = this.state
     return (
       <div>
-        <DayLabel day={1} timline={this.timeline}/>
+        <DayLabel day={1} />
         <Timeline ref={ref => this.timeline = ref} play={play} speed={speed} />
         <SceneControls
           onPlay={this.handlePlay}
@@ -48,4 +51,6 @@ class Scene extends React.Component {
   }
 }
 
-export default Scene;
+const mapStateToProps = state => ({ current: state.scene.current });
+const mapDispatchToProps = { updateCurrentTime };
+export default connect(mapStateToProps, mapDispatchToProps)(Scene);
