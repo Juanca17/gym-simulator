@@ -3,6 +3,9 @@ import Timeline from './Timeline'
 import SceneControls from './SceneControls'
 import DayLabel from './DayLabel'
 import UserQueue from './UserQueue'
+import StateTable from './StateTable'
+import { Button } from 'antd'
+import {runSimulation} from '../simulation.js'
 
 import { connect } from 'react-redux';
 import { updateCurrentTime } from '../redux';
@@ -34,12 +37,17 @@ class Scene extends React.Component {
     this.props.updateCurrentTime(current + 1)
   }
 
+  handleSimulation = async() => {
+    await runSimulation()
+  }
+
   render() {
     const { play, speed } = this.state
     return (
       <div>
+        <Button onClick={this.handleSimulation}>Run</Button>
         <DayLabel day={1} />
-        <Timeline ref={ref => this.timeline = ref} play={play} speed={speed} />
+        <Timeline play={play} speed={speed} />
         <SceneControls
           onPlay={this.handlePlay}
           onPause={this.handlePause}
@@ -49,23 +57,8 @@ class Scene extends React.Component {
           onStepForward={this.handleStepForward}
         />
         <UserQueue />
-        <br/>
-        test
-        <br/>
-        test
-        <br/>
-        test
-        <br/>
-        test
-        <br/>
-        test
-        <br/>
-        test
-        <br/>
-        test
-        <br/>
-        test
-        
+        <br />
+        <StateTable />
       </div>
     )
   }

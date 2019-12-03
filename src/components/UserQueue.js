@@ -14,8 +14,8 @@ class UserQueue extends React.Component {
 
   render() {
     const { users } = this.props
-    this.userList = users.map((user) =>
-      <span>
+    this.userList = users.map((user, index) =>
+      <span key={index}>
         <img className="user-icon" src={user.gender === 'male' ? boy : girl} alt={user.gender}/>
       </span>
     )
