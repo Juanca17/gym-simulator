@@ -1,9 +1,10 @@
 import React from 'react';
 import boy from '../assets/boy.png';
 import girl from '../assets/girl.png';
-import { Pagination } from 'antd';
+import { Popover } from 'antd';
 import { connect } from 'react-redux';
 import { updateCurrentTime } from '../redux';
+import JSONPretty from 'react-json-pretty'
 
 class UserQueue extends React.Component {
   state = {
@@ -16,21 +17,25 @@ class UserQueue extends React.Component {
     const { users } = this.props
     this.userList = users.map((user, index) =>
       <span key={index}>
-        <img className="user-icon" src={user.gender === 'male' ? boy : girl} alt={user.gender}/>
+        <Popover placement="right" content={<JSONPretty id="json-pretty" data={user}/>} title={user.name}>
+          <img className="user-icon" src={user.gender === 'male' ? boy : girl} alt={user.gender}/>
+        </Popover>
       </span>
     )
     return (
       <div className="user-queue">
         <center><span>Usuarios Activos</span></center>
         {this.userList}
-        <Pagination
+        {/*<Pagination
           className="user-queue-pagination"
           size='small'
           total={users.length}
           showTotal={(total, range) => `${range[0]}-${range[1]} de ${total} usuarios`}
           pageSize={20}
           defaultCurrent={1}
-        />
+        />*/}
+        <br/>
+        {`Total: ${users.length} usuarios`}
       </div>
     )
   }

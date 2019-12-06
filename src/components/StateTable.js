@@ -1,7 +1,10 @@
 import React from 'react'
-import { Table } from 'antd'
+import { Table, Popover } from 'antd'
 import { connect } from 'react-redux'
 import ActivityTag from './ActivityTag'
+import boy from '../assets/boy.png'
+import girl from '../assets/girl.png'
+import JSONPretty from 'react-json-pretty'
 
 const columns = [
   {
@@ -46,7 +49,22 @@ const columns = [
     title: 'Active users',
     dataIndex: 'users',
     key: 'users',
-    width: '43%'
+    width: '43%',
+    render: users => (
+      <span>
+        {
+          users.map((user, index) => {
+            return (
+              <span key={index}>
+                <Popover placement="right" content={<JSONPretty id="json-pretty" data={user}/>} title={user.name}>
+                  <img className="user-icon" src={user.gender === 'male' ? boy : girl} alt={user.gender}/>
+                </Popover>
+              </span>
+            )
+          })
+        }
+      </span>
+    ),
   }
 ]
 

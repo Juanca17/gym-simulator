@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 const DayLabel = (props) => {
   const { day, current } = props
   const days = ['Monday','Tuesday', 'Wednesday', 'Thursday', 'Friday']
-  let hour = moment("06:00:00", "H:mm:ss").add(current, 'minutes');
+  let hour = moment("10:00:00", "H:mm:ss").add(current, 'minutes');
   let dayLabel = days[day]
   let hourLabel = hour.format('LT')
   return (

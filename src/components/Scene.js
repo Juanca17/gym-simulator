@@ -4,17 +4,20 @@ import SceneControls from './SceneControls'
 import DayLabel from './DayLabel'
 import UserQueue from './UserQueue'
 import StateTable from './StateTable'
-import { Button } from 'antd'
-import {runSimulation} from '../simulation.js'
 
 import { connect } from 'react-redux';
-import { updateCurrentTime } from '../redux';
+import { runSimulationDispatch, updateCurrentTime } from '../redux';
 
 class Scene extends React.Component {
   state = {
     play: false,
     speed: 2000
   }
+
+  componentDidMount () {
+    this.props.runSimulationDispatch()
+  }
+
   handlePlay = () => {
     this.setState({ play: true, speed: 2000 })
   }
@@ -37,15 +40,10 @@ class Scene extends React.Component {
     this.props.updateCurrentTime(current + 1)
   }
 
-  handleSimulation = async() => {
-    await runSimulation()
-  }
-
   render() {
     const { play, speed } = this.state
     return (
       <div>
-        <Button onClick={this.handleSimulation}>Run</Button>
         <DayLabel day={1} />
         <Timeline play={play} speed={speed} />
         <SceneControls
@@ -64,6 +62,6 @@ class Scene extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ current: state.scene.current });
-const mapDispatchToProps = { updateCurrentTime };
+const mapStateToProps = state => ({ scene: state.scene.scene, current: state.scene.current });
+const mapDispatchToProps = { runSimulationDispatch, updateCurrentTime };
 export default connect(mapStateToProps, mapDispatchToProps)(Scene);

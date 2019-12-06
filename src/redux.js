@@ -1,34 +1,48 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { stateList } from './db'
 
-import thunk from 'redux-thunk';
+import thunk from 'redux-thunk'
+import { runSimulation } from './simulation.js'
 
 const initialState = {
   current: 0,
-  users: [
-    {
-      name: 'juan',
-      gender:'male',
-      currentStateId: 0,
-      previousStates: [1,2],
-      timeOnCurrentState: 10,
-      timeSpent: 80,
-      routine: ['cardio','leg','glute'],
-      markovchain: [{stateId:0, probability: 1},{stateId:1, probability: 0}]
-    }, {
-      gender:'female'
-    }
-  ],
-  stateList: stateList
+  users: [],
+  stateList: stateList,
+  scene: [{users:[], state:stateList}]
 };
 
 // actions.js
-export const updateCurrentTime = current => dispatch => {
-  // updateUserArrival(current)
+export const updateCurrentTime = current => (dispatch, getState) => {
+  const { scene } = getState().scene
+  console.log('[updateCurrentTime]',scene);
+  console.log(scene[current].state);
+  let fixedCurrent = current
+  if (current >= scene.length) {
+    fixedCurrent = scene.length - 1
+  }
   dispatch({
     type: 'UPDATE_CURRENT_TIME',
-    payload: current
+    current: current,
+    users: scene[fixedCurrent].users,
+    stateList: scene[fixedCurrent].state
   });
+}
+
+export const runSimulationDispatch = current => async(dispatch, getState) => {
+  try {
+    const { current } = getState().scene
+    const scene = await runSimulation()
+    let fixedCurrent = current
+    if (current >= scene.length) {
+      fixedCurrent = scene.length - 1
+    }
+    dispatch({
+      type: 'RUN_SIMULATION',
+      scene: scene,
+      users: scene[fixedCurrent].users,
+      stateList: scene[fixedCurrent].state
+    })
+  } catch (e) { throw e }
 }
 
 
@@ -49,7 +63,16 @@ export const scene = (state = initialState, action) => {
     case 'UPDATE_CURRENT_TIME':
       return {
         ...state,
-        current: action.payload
+        current: action.current,
+        users: action.users,
+        stateList: action.stateList
+      }
+    case 'RUN_SIMULATION':
+      return {
+        ...state,
+        scene: action.scene,
+        users: action.users,
+        stateList: action.stateList
       }
     default:
       return state;
