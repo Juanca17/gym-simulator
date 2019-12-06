@@ -16,7 +16,7 @@ export const runSimulation = async() => {
     scene.push(JSON.parse(JSON.stringify(sceneState)))
     // console.log('Iteracion', i, sceneState);
   }
-  // console.log(scene);
+  console.log(scene);
   return scene
 }
 
@@ -46,6 +46,7 @@ const createUser = async(n, sceneState) => {
       currentStateId: 0,
       timeOnCurrentState: 0,
       timeSpent: 0,
+      doneCardio: false,
       routine: await getRoutine()
     }
     if (probability > 0.5) {
@@ -80,19 +81,29 @@ const updateActiveUsers = async(current, sceneState) => {
       sceneState.state[user.currentStateId].users.shift()
       sceneState.users.shift()
     } else if (user.currentStateId === 0) {
-      sceneState.state[user.currentStateId].users.shift()
       let r = Math.floor(Math.random() * 4) + 1
-      sceneState.users[i].currentStateId = r
-      sceneState.users[i].timeOnCurrentState = 0
-      sceneState.state[r].users.push(sceneState.users[i])
+      if (sceneState.state[r].capacity === sceneState.state[r].users.length) {
+        sceneState.users[i].currentStateId = 0
+        sceneState.users[i].timeOnCurrentState = user.timeOnCurrentState + 1
+      } else {
+        sceneState.state[user.currentStateId].users.shift()
+        sceneState.users[i].currentStateId = r
+        sceneState.users[i].timeOnCurrentState = 0
+        sceneState.state[r].users.push(sceneState.users[i])
+      }
     } else if (user.timeOnCurrentState >= 15) {
-      sceneState.state[user.currentStateId].users.shift()
       let r = Math.floor(Math.random() * (user.routine.length - 1))
-      let stateId = user.routine[r]
-      sceneState.users[i].currentStateId = stateId
-      sceneState.users[i].timeOnCurrentState = 0
-      sceneState.users[i].routine.splice(r, 1)
-      sceneState.state[stateId].users.push(sceneState.users[i])
+      if (sceneState.state[r].capacity >= sceneState.state[r].users.length) {
+        sceneState.state[user.currentStateId].users.shift()
+        let stateId = user.routine[r]
+        sceneState.users[i].currentStateId = stateId
+        sceneState.users[i].timeOnCurrentState = 0
+        sceneState.users[i].doneCardio = true
+        sceneState.users[i].routine.splice(r, 1)
+        sceneState.state[stateId].users.push(sceneState.users[i])
+      } else {
+        sceneState.users[i].timeOnCurrentState = user.timeOnCurrentState + 1
+      }
     } else {
       sceneState.users[i].timeOnCurrentState = user.timeOnCurrentState+1
     }
@@ -100,13 +111,14 @@ const updateActiveUsers = async(current, sceneState) => {
   }
 }
 
-// const removeUserFromState = async(user, sceneState) => {
+// const removeUserFromState = (user, sceneState) => {
 //   for (let i = 0; i < sceneState.state[user.currentStateId].users.length; i++) {
 //     if (user.name === sceneState.state[user.currentStateId].users[i]) {
 //       sceneState.state[user.currentStateId].users.splice(i, 1)
 //       return
 //     }
 //   }
+//   return
 // }
 
 // function randomChoice(p) {

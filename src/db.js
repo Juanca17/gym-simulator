@@ -45,7 +45,7 @@ export const stateList = [
     id: 5,
     name: 'Single Rack',
     activities: [BICEP, TRICEP, GLUTE, CHEST, SHOULDER],
-    capacity: 1,
+    capacity: 2,
     users: []
   }, {
     id: 6,
